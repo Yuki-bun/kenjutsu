@@ -174,12 +174,12 @@ impl TestRepo {
         Ok(())
     }
 
-    fn jj(&self) -> JjCommandBuilder {
+    pub fn jj(&self) -> JjCommandBuilder {
         JjCommandBuilder::new(self._dir.path())
     }
 }
 
-struct JjCommandBuilder {
+pub struct JjCommandBuilder {
     command: Command,
 }
 
@@ -190,7 +190,7 @@ impl JjCommandBuilder {
         Self { command }
     }
 
-    fn args<I, S>(mut self, args: I) -> Self
+    pub fn args<I, S>(mut self, args: I) -> Self
     where
         I: IntoIterator<Item = S>,
         S: AsRef<OsStr>,
@@ -199,7 +199,15 @@ impl JjCommandBuilder {
         self
     }
 
-    fn run(mut self) -> Result<Vec<u8>> {
+    pub fn arg<I>(mut self, arg: I) -> Self
+    where
+        I: AsRef<OsStr>,
+    {
+        self.command.arg(arg);
+        self
+    }
+
+    pub fn run(mut self) -> Result<Vec<u8>> {
         let output = self.command.output().expect("Failed to execute jj command");
         if output.status.success() {
             Ok(output.stdout)
