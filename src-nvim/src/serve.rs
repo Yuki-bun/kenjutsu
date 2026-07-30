@@ -4,7 +4,7 @@ use std::process::Command;
 
 use anyhow::{Context, Result};
 use comment_commit::{CommentCommit, DiffSide, get_all_ported_comments};
-use kenjutsu_core::open_repo_chase_workspace;
+use kenjutsu_core::services::git::open_repository;
 use kenjutsu_types::{ChangeId, CommitChangeIdExt, CommitId};
 use marker_commit::MarkerCommit;
 use serde::{Deserialize, Serialize};
@@ -45,7 +45,7 @@ impl Response {
 }
 
 pub fn run(local_dir: &Path) -> Result<()> {
-    let repo = open_repo_chase_workspace(local_dir)
+    let repo = open_repository(local_dir)
         .with_context(|| format!("failed to open git repository at {}", local_dir.display()))?;
 
     let stdin = io::stdin().lock();

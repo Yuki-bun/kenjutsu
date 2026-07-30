@@ -1,4 +1,7 @@
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 use git2::{
     AutotagOption, Commit, Cred, CredentialType, FetchOptions, RemoteCallbacks, Repository,
@@ -36,9 +39,27 @@ pub trait SshCredentialProvider {
     fn ssh_credentials(&self) -> Vec<SshCredential>;
 }
 
-pub fn open_repository(local_dir: &Path) -> Result<Repository> {
-    Repository::open(local_dir)
-        .map_err(|_| Error::RepoNotFound(local_dir.to_string_lossy().to_string()))
+pub fn open_repository(dir: &Path) -> Result<Repository> {
+    if let Ok(repo) = Repository::open(dir) {
+        return Ok(repo);
+    }
+
+    let jj_repo_file_path = dir.join(".jj/repo");
+    let file_content = fs::read_to_string(&jj_repo_file_path).map_err(|_| {
+        git2::Error::new(
+            git2::ErrorCode::GenericError,
+            git2::ErrorClass::Repository,
+            "Directory is neither a git repository nor a valid jj workspace",
+        )
+    })?;
+
+    // In secondary jj workspaces, `.jj/repo` contains a relative path
+    // pointing back to the root workspace's `.jj/repo` folder.
+    let rel_target = file_content.trim().trim_end_matches(".jj/repo");
+    let root_workspace = dir.join(".jj").join(rel_target);
+
+    let repo = Repository::open(root_workspace)?;
+    Ok(repo)
 }
 
 /// Falls back to "origin" if no remotes match
@@ -204,7 +225,31 @@ pub fn get_commits_in_range(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use tempfile::TempDir;
     use test_repo::TestRepo;
+
+    #[test]
+    fn can_open_root_workspace() {
+        let t_repo = TestRepo::new().unwrap();
+        let repo = open_repository(t_repo.path()).unwrap();
+        assert_eq!(t_repo.repo.path(), repo.path());
+    }
+
+    #[test]
+    fn can_open_workspace() {
+        let root_repo = TestRepo::new().unwrap();
+        let workspace_dir = TempDir::new().unwrap();
+
+        root_repo
+            .jj()
+            .args(["workspace", "add"])
+            .arg(workspace_dir.path())
+            .run()
+            .unwrap();
+
+        let workspace_repo = open_repository(workspace_dir.path()).unwrap();
+        assert_eq!(workspace_repo.path(), root_repo.repo.path());
+    }
 
     #[test]
     fn get_commits_in_range_single_commit() {
