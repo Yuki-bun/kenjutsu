@@ -394,7 +394,7 @@ impl<'a> MarkerCommit<'a> {
         log::info!("created marker commit for {}", self.change_id);
 
         let ref_name = marker_commit_ref_name(self.change_id);
-        log::info!("Updating ref: {}", &ref_name);
+        log::info!("Updating ref: {}", ref_name);
         let log_message = format!(
             "kenjutu: updated reference for marker commit for change_id: {}",
             self.change_id
