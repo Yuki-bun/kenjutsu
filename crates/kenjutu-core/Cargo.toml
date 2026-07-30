@@ -25,3 +25,4 @@ two-face = { version = "0.5", features = ["syntect-default-fancy"], optional = t
 
 [dev-dependencies]
 test-repo = { workspace = true }
+tempfile = "3"
