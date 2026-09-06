@@ -1,4 +1,4 @@
-# Kenjutu Comment CLI
+# Kenjutsu Comment CLI
 
 A command-line tool (`kjc`) for retrieving inline diff comments attached to jj changes.
 Designed primarily for consumption by AI agents — it outputs structured JSON with
@@ -20,23 +20,23 @@ agents can understand and act on review feedback.
 
 ## Installation
 
-Download a binary from the [releases page](https://github.com/Yuki-bun/kenjutu/releases) (look for `kjc/v*` tags) and place it on your `PATH`:
+Download a binary from the [releases page](https://github.com/Yuki-bun/kenjutsu/releases) (look for `kjc/v*` tags) and place it on your `PATH`:
 
 ```bash
 VERSION=0.1.0
 
 # macOS (Apple Silicon)
-curl -LO "https://github.com/Yuki-bun/kenjutu/releases/download/kjc/v${VERSION}/kjc-aarch64-darwin"
+curl -LO "https://github.com/Yuki-bun/kenjutsu/releases/download/kjc/v${VERSION}/kjc-aarch64-darwin"
 chmod +x kjc-aarch64-darwin
 sudo mv kjc-aarch64-darwin /usr/local/bin/kjc
 
 # Linux (x86_64)
-curl -LO "https://github.com/Yuki-bun/kenjutu/releases/download/kjc/v${VERSION}/kjc-x86_64-linux"
+curl -LO "https://github.com/Yuki-bun/kenjutsu/releases/download/kjc/v${VERSION}/kjc-x86_64-linux"
 chmod +x kjc-x86_64-linux
 sudo mv kjc-x86_64-linux /usr/local/bin/kjc
 
 # Linux (aarch64)
-curl -LO "https://github.com/Yuki-bun/kenjutu/releases/download/kjc/v${VERSION}/kjc-aarch64-linux"
+curl -LO "https://github.com/Yuki-bun/kenjutsu/releases/download/kjc/v${VERSION}/kjc-aarch64-linux"
 chmod +x kjc-aarch64-linux
 sudo mv kjc-aarch64-linux /usr/local/bin/kjc
 ```
@@ -44,8 +44,8 @@ sudo mv kjc-aarch64-linux /usr/local/bin/kjc
 ### From source
 
 ```bash
-git clone --depth 1 https://github.com/Yuki-bun/kenjutu.git
-cd kenjutu
+git clone --depth 1 https://github.com/Yuki-bun/kenjutsu.git
+cd kenjutsu
 cargo install --path src-cli
 ```
 

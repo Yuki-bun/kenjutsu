@@ -98,7 +98,7 @@ function selectionToCommentLineState(
   })
   const [start, end] =
     anchorIdx < cursorIdx ? [anchor, cursor] : [cursor, anchor]
-  // TODO: handle github style old-new mixed selection and kenjutu style single
+  // TODO: handle github style old-new mixed selection and kenjutsu style single
   // side selection
   return {
     line: end.line,

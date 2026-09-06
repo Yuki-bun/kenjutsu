@@ -1,7 +1,7 @@
 ---@diagnostic disable: duplicate-set-field
 local M = {}
-local kjn = require("kenjutu.kjn")
-local jj = require("kenjutu.jj")
+local kjn = require("kenjutsu.kjn")
+local jj = require("kenjutsu.jj")
 
 local original_kjn_fetch_blob = kjn.fetch_blob
 local original_kjn_files = kjn.files

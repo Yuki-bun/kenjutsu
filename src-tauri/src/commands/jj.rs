@@ -4,8 +4,8 @@ use tauri::command;
 
 use super::{Error, Result};
 use crate::models::{CommitGraph, JjStatus};
-use kenjutu_core::services::{graph, jj};
-use kenjutu_types::ChangeId;
+use kenjutsu_core::services::{graph, jj};
+use kenjutsu_types::ChangeId;
 
 /// Get jj status for a directory (is_installed, is_jj_repo)
 #[command]

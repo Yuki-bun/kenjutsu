@@ -1,7 +1,7 @@
 use std::{ffi::OsStr, path::Path, process::Command};
 
 use git2::{IndexAddOption, Oid, Repository};
-use kenjutu_types::{ChangeId, CommitId};
+use kenjutsu_types::{ChangeId, CommitId};
 use serde::Deserialize;
 use serde_json::Deserializer;
 use tempfile::TempDir;

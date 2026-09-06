@@ -1,4 +1,4 @@
-# Kenjutu Neovim Plugin
+# Kenjutsu Neovim Plugin
 
 <video src="https://github.com/user-attachments/assets/e6c8ae3e-aad4-48f0-ba23-6d0be6c381a8" autoplay loop muted playsinline></video>
 
@@ -11,7 +11,7 @@ repositories — with hunk-level review tracking, all without leaving your edito
 
 ## Features
 
-- **`:Kenjutu log`** — Browse your jj commit graph with colored output
+- **`:Kenjutsu log`** — Browse your jj commit graph with colored output
 - **Split diff views** — Side-by-side base, marker, and target views using native Vim diff
 - **Hunk-level review** — Mark hunks as reviewed with `s` (uses `diffput`/`diffget` under the hood)
 - **File list** — Navigate changed files and toggle their review status
@@ -41,7 +41,7 @@ needed.
 
 ```lua
 {
-  "Yuki-bun/kenjutu",
+  "Yuki-bun/kenjutsu",
   build = "make install-kjn", -- prebuilt binary
   -- or
   build = "make build-kjn", -- build from source (requires Rust toolchain)
@@ -55,9 +55,9 @@ needed.
 vim.api.nvim_create_autocmd("PackChanged", {
   callback = function(ev)
     local name, kind = ev.data.spec.name, ev.data.kind
-    if name == "kenjutu" and (kind == "install" or kind == "update") then
+    if name == "kenjutsu" and (kind == "install" or kind == "update") then
       if not ev.data.active then
-          vim.cmd.packadd("kenjutu")
+          vim.cmd.packadd("kenjutsu")
       end
       vim.system({ "make", "install-kjn" }, { cwd = ev.data.path }) -- prebuilt binary
       -- or
@@ -66,7 +66,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
   end,
 })
 
-vim.pack.add({ "https://github.com/Yuki-bun/kenjutu" })
+vim.pack.add({ "https://github.com/Yuki-bun/kenjutsu" })
 ```
 
 ### Manual
@@ -79,7 +79,7 @@ Clone the repository into your Neovim pack path, then run `make install-kjn`
 ### Commands
 
 ```
-:Kenjutu log    " Open the jj commit log
+:Kenjutsu log    " Open the jj commit log
 ```
 
 ### Keybindings
@@ -228,7 +228,7 @@ Press `x` again to unresolve.
 
 The plugin has two parts:
 
-**Lua plugin** (`/lua/kenjutu`) — Handles the UI: rendering the commit graph, managing
+**Lua plugin** (`/lua/kenjutsu`) — Handles the UI: rendering the commit graph, managing
 diff windows, tracking keybindings, and displaying review state.
 
 **Rust CLI backend** (`/src-nvim`, binary `kjn`) — Does the heavy lifting: reading git

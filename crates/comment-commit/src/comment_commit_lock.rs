@@ -10,7 +10,7 @@ use crate::{ChangeId, Result};
 
 /// A file-based exclusive lock for comment-commit writes.
 ///
-/// Lock path: `.git/info/kenjutu/comment-lock/{change_id}`
+/// Lock path: `.git/info/kenjutsu/comment-lock/{change_id}`
 ///
 /// Uses a separate lock path from marker-commit to avoid contention between
 /// review state writes and comment writes.
@@ -41,7 +41,7 @@ impl CommentCommitLock {
 
     pub fn lock_path(repo: &Repository, change_id: ChangeId) -> PathBuf {
         repo.path()
-            .join("info/kenjutu/comment-lock")
+            .join("info/kenjutsu/comment-lock")
             .join(change_id.to_string())
     }
 }

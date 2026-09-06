@@ -1,13 +1,13 @@
 use std::path::PathBuf;
 
 use comment_commit::{CommentCommit, DiffSide, PortedComment, get_all_ported_comments};
-use kenjutu_types::CommitId;
+use kenjutsu_types::CommitId;
 use serde::Deserialize;
 use specta::Type;
 use tauri::command;
 
 use super::{Error, Result};
-use kenjutu_core::services::git;
+use kenjutsu_core::services::git;
 
 #[derive(Deserialize, Type)]
 pub struct AddCommentInput {

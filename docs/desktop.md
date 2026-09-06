@@ -1,4 +1,4 @@
-# Kenjutu Desktop
+# Kenjutsu Desktop
 
 A Tauri 2 desktop application for reviewing diffs and GitHub pull requests locally
 in Jujutsu repositories that use a Git backend.
@@ -82,8 +82,8 @@ Each file in the file list shows one of these states:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Yuki-bun/kenjutu.git
-cd kenjutu
+git clone https://github.com/Yuki-bun/kenjutsu.git
+cd kenjutsu
 
 # Build the Tauri desktop app
 make desktop-build
@@ -91,7 +91,7 @@ make desktop-build
 
 ### macOS
 
-When the build completes, Finder opens automatically. Drag `Kenjutu.app`
+When the build completes, Finder opens automatically. Drag `Kenjutsu.app`
 into your Applications folder to install.
 
 ### Linux

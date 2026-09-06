@@ -50,7 +50,7 @@ jobs:
       - name: Build
         env:
           TARGET: ${{ matrix.target }}
-        run: cargo build --release --package kenjutu-nvim --bin kjn --features vendored-openssl --target "$TARGET"
+        run: cargo build --release --package kenjutsu-nvim --bin kjn --features vendored-openssl --target "$TARGET"
 
       - name: Prepare artifact
         env:
@@ -84,14 +84,14 @@ jobs:
       - name: Validate version
         run: |
           TAG_VERSION="${GITHUB_REF_NAME#kjn/v}"
-          CARGO_VERSION=$(cargo metadata --format-version 1 --no-deps | jq -r '.packages[] | select(.name == "kenjutu-nvim") | .version')
-          LUA_VERSION=$(grep -oP "return \"\K[^\"]*" lua/kenjutu/version.lua)
+          CARGO_VERSION=$(cargo metadata --format-version 1 --no-deps | jq -r '.packages[] | select(.name == "kenjutsu-nvim") | .version')
+          LUA_VERSION=$(grep -oP "return \"\K[^\"]*" lua/kenjutsu/version.lua)
           if [ "$TAG_VERSION" != "$CARGO_VERSION" ]; then
             echo "::error::Tag version ($TAG_VERSION) does not match Cargo.toml version ($CARGO_VERSION)"
             exit 1
           fi
           if [ "$TAG_VERSION" != "$LUA_VERSION" ]; then
-            echo "::error::Tag version ($TAG_VERSION) does not match lua/kenjutu/version.lua ($LUA_VERSION)"
+            echo "::error::Tag version ($TAG_VERSION) does not match lua/kenjutsu/version.lua ($LUA_VERSION)"
             exit 1
           fi
           echo "VERSION=$TAG_VERSION" >> "$GITHUB_ENV"

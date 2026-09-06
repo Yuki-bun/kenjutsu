@@ -8,11 +8,11 @@ use crate::{
     tree_builder_ext::TreeBuilderExt,
 };
 use git2::{Commit, Oid, Repository, Signature, Tree};
-use kenjutu_types::CommitChangeIdExt;
+use kenjutsu_types::CommitChangeIdExt;
 use std::path::Path;
 
 /// Commit for tracking review state for a specific revision.
-/// Stored at refs/kenjutu/{change_id}/marker pointing to the commit being reviewed.
+/// Stored at refs/kenjutsu/{change_id}/marker pointing to the commit being reviewed.
 pub struct MarkerCommit<'a> {
     change_id: ChangeId,
     commit_id: CommitId,
@@ -396,7 +396,7 @@ impl<'a> MarkerCommit<'a> {
         let ref_name = marker_commit_ref_name(self.change_id);
         log::info!("Updating ref: {}", ref_name);
         let log_message = format!(
-            "kenjutu: updated reference for marker commit for change_id: {}",
+            "kenjutsu: updated reference for marker commit for change_id: {}",
             self.change_id
         );
         let force_update = true;
@@ -406,7 +406,7 @@ impl<'a> MarkerCommit<'a> {
     }
 
     fn signature() -> Result<Signature<'static>> {
-        let sig = Signature::now("kenjutu", "kenjutu@gmail.com")?;
+        let sig = Signature::now("kenjutsu", "kenjutsu@gmail.com")?;
         Ok(sig)
     }
 }
@@ -453,7 +453,7 @@ fn blob_content_and_mode(
 }
 
 fn marker_commit_ref_name(change_id: ChangeId) -> String {
-    format!("refs/kenjutu/{}/marker", change_id)
+    format!("refs/kenjutsu/{}/marker", change_id)
 }
 
 #[cfg(test)]

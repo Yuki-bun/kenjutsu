@@ -9,7 +9,7 @@ use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(
-    name = "kenjutu-comments",
+    name = "kenjutsu-comments",
     about = "Retrieve inline diff comments for a jj change"
 )]
 struct Cli {

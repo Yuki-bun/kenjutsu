@@ -1,6 +1,6 @@
 local t = require("tests.test")
 
-local jj = require("kenjutu.jj")
+local jj = require("kenjutsu.jj")
 local parse_ansi_line = jj._test.parse_ansi_line
 local ansi_256_to_hex = jj._test.ansi_256_to_hex
 local strip_ansi = jj._test.strip_ansi

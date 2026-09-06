@@ -1,9 +1,9 @@
 ---@diagnostic disable: duplicate-set-field
 local t = require("tests.test")
 local t_utils = require("tests.utils")
-local kjn = require("kenjutu.kjn")
-local review = require("kenjutu.review")
-local comments_mod = require("kenjutu.comments")
+local kjn = require("kenjutsu.kjn")
+local review = require("kenjutsu.review")
+local comments_mod = require("kenjutsu.comments")
 
 local function comments_case(name, fn)
   t.run_case(name, function()
@@ -23,7 +23,7 @@ end
 ---@param bufnr integer
 ---@return table[]
 local function get_signs(bufnr)
-  local placed = vim.fn.sign_getplaced(bufnr, { group = "kenjutu_comments" })
+  local placed = vim.fn.sign_getplaced(bufnr, { group = "kenjutsu_comments" })
   return placed[1] and placed[1].signs or {}
 end
 
@@ -86,7 +86,7 @@ comments_case("unreviewed file places sign on right (target) buffer", function()
   local target_signs = get_signs(target_bufnr)
   t.eq(#target_signs, 1)
   t.eq(target_signs[1].lnum, 2)
-  t.eq(target_signs[1].name, "KenjutuComment")
+  t.eq(target_signs[1].name, "KenjutsuComment")
 
   t.eq(#get_signs(marker_bufnr), 0)
 end)
@@ -111,7 +111,7 @@ comments_case("reviewed file places sign on left (base) buffer", function()
   local base_signs = get_signs(base_bufnr)
   t.eq(#base_signs, 1)
   t.eq(base_signs[1].lnum, 5)
-  t.eq(base_signs[1].name, "KenjutuComment")
+  t.eq(base_signs[1].name, "KenjutsuComment")
 
   t.eq(#get_signs(marker_bufnr), 0)
 end)
@@ -133,7 +133,7 @@ comments_case("resolved comment uses resolved sign", function()
 
   local signs = get_signs(right_bufnr)
   t.eq(#signs, 1)
-  t.eq(signs[1].name, "KenjutuCommentResolved")
+  t.eq(signs[1].name, "KenjutsuCommentResolved")
 end)
 
 comments_case("no signs when no comments", function()

@@ -1,12 +1,12 @@
 [workspace]
-members = ["crates/comment-commit","crates/kenjutu-core","crates/kenjutu-types","crates/marker-commit","crates/test-repo","src-cli","src-nvim","src-tauri"]
+members = ["crates/comment-commit","crates/kenjutsu-core","crates/kenjutsu-types","crates/marker-commit","crates/test-repo","src-cli","src-nvim","src-tauri"]
 resolver = "2"
 
 [workspace.package]
 version = "0.1.0"
 authors = ["Yuto Maruta"]
 license = "Apache-2.0"
-repository = "https://github.com/Yuki-bun/kenjutu"
+repository = "https://github.com/Yuki-bun/kenjutsu"
 description = "Per-commit code review for Jujutsu repositories"
 
 [workspace.dependencies]
@@ -18,8 +18,8 @@ log = "0.4"
 specta = "=2.0.0-rc.22"
 fs2 = "0.4"
 anyhow = "1"
-kenjutu-types = { path = "crates/kenjutu-types" }
-kenjutu-core = { path = "crates/kenjutu-core" }
+kenjutsu-types = { path = "crates/kenjutsu-types" }
+kenjutsu-core = { path = "crates/kenjutsu-core" }
 marker-commit = { path = "crates/marker-commit" }
 comment-commit = { path = "crates/comment-commit" }
 test-repo = { path = "crates/test-repo" }

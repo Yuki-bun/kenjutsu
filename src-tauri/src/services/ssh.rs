@@ -5,7 +5,7 @@ use tauri::{AppHandle, Manager};
 use tauri_plugin_store::StoreExt;
 
 use crate::models::SshSettings;
-use kenjutu_core::services::git::{SshCredential, SshCredentialProvider};
+use kenjutsu_core::services::git::{SshCredential, SshCredentialProvider};
 
 const SETTINGS_STORE: &str = "settings.json";
 const SSH_SETTINGS_KEY: &str = "ssh";

@@ -1,6 +1,6 @@
 local t = require("tests.test")
 
-local utils = require("kenjutu.utils")
+local utils = require("kenjutsu.utils")
 
 -- file_path -------------------------------------------------------------------
 

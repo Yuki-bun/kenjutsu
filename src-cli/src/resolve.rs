@@ -2,7 +2,7 @@ use std::path::Path;
 use std::process::Command;
 
 use anyhow::{Context, Result, bail};
-use kenjutu_types::{ChangeId, CommitId};
+use kenjutsu_types::{ChangeId, CommitId};
 
 pub struct RevsetEntry {
     pub change_id: ChangeId,

@@ -4,8 +4,8 @@ use std::process::Command;
 
 use anyhow::{Context, Result};
 use comment_commit::{CommentCommit, DiffSide, get_all_ported_comments};
-use kenjutu_core::open_repo_chase_workspace;
-use kenjutu_types::{ChangeId, CommitChangeIdExt, CommitId};
+use kenjutsu_core::open_repo_chase_workspace;
+use kenjutsu_types::{ChangeId, CommitChangeIdExt, CommitId};
 use marker_commit::MarkerCommit;
 use serde::{Deserialize, Serialize};
 
@@ -119,7 +119,7 @@ fn handle_files(id: u64, repo: &git2::Repository, params: &serde_json::Value) ->
         params.commit_id
     };
 
-    match kenjutu_core::services::diff::generate_file_list(repo, commit_id) {
+    match kenjutsu_core::services::diff::generate_file_list(repo, commit_id) {
         Ok((change_id, files)) => {
             let output = serde_json::json!({
                 "commitId": commit_id,

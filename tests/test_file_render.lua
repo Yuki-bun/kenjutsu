@@ -1,10 +1,10 @@
 local t = require("tests.test")
 
-local file_render = require("kenjutu.file_render")
+local file_render = require("kenjutsu.file_render")
 local build_tree = file_render.build_tree
 
 ---@param overrides table|nil
----@return kenjutu.FileEntry
+---@return kenjutsu.FileEntry
 local function make_file(overrides)
   return vim.tbl_extend("force", {
     newPath = "file.lua",

@@ -1,15 +1,15 @@
 use std::path::PathBuf;
 
-use kenjutu_types::{ChangeId, CommitId};
+use kenjutsu_types::{ChangeId, CommitId};
 use marker_commit::MarkerCommit;
 use tauri::{AppHandle, command};
 
 use super::Result;
 use crate::models::{CommitFileList, DiffLine, RegionId};
 use crate::services::ssh::AppSshCredentials;
-use kenjutu_core::services::diff::PartialReviewDiffs;
-use kenjutu_core::services::git::get_or_fetch_commit;
-use kenjutu_core::services::{diff, git};
+use kenjutsu_core::services::diff::PartialReviewDiffs;
+use kenjutsu_core::services::git::get_or_fetch_commit;
+use kenjutsu_core::services::{diff, git};
 
 #[command]
 #[specta::specta]

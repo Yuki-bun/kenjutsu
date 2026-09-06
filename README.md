@@ -1,4 +1,4 @@
-# Kenjutu
+# Kenjutsu
 
 **A per-commit code review system for [Jujutsu](https://martinvonz.github.io/jj/) repositories.**
 
@@ -7,7 +7,7 @@
 <video src="https://github.com/user-attachments/assets/e6c8ae3e-aad4-48f0-ba23-6d0be6c381a8" autoplay loop muted playsinline width="49%"></video>
 </p>
 
-Kenjutu is a local code review tool for [Jujutsu](https://martinvonz.github.io/jj/)
+Kenjutsu is a local code review tool for [Jujutsu](https://martinvonz.github.io/jj/)
 repositories that use Git as a backend. It lets you review changes commit-by-commit
 with hunk-level granularity.
 
@@ -32,13 +32,13 @@ each commit self-contained lightens the mental load of verifying what the AI
 produced.
 
 Jujutsu makes this workflow practical by treating history as mutable — amending any
-commit is as easy as editing the latest one. Kenjutu completes the loop by tracking
+commit is as easy as editing the latest one. Kenjutsu completes the loop by tracking
 your review progress through those rewrites, so you never lose sight of what you've
 verified.
 
 ## How it compares
 
-|                               | Kenjutu                                             | GitHub / GitLab               | Gerrit                              |
+|                               | Kenjutsu                                            | GitHub / GitLab               | Gerrit                              |
 | ----------------------------- | --------------------------------------------------- | ----------------------------- | ----------------------------------- |
 | **Review unit**               | Per-commit                                          | PR-level centric              | Per-patchset                        |
 | **Review granularity**        | Hunk-level — partially review a file, pick up later | File-level "Viewed" checkbox  | File-level                          |
@@ -54,19 +54,19 @@ numbered revision and let reviewers diff between revisions. This works well when
 reviewer has internalized the previous version and wants to check for specific changes
 that address their feedback.
 
-Kenjutu takes a different approach: **remaining diff**. Instead of tracking revisions,
+Kenjutsu takes a different approach: **remaining diff**. Instead of tracking revisions,
 it tracks which hunks you've verified in the _current_ content. After a rebase or amend,
 you see exactly what still needs review — no more, no less.
 
 These solve different problems. Inter-diff answers "what changed since I last looked?"
 Remaining diff answers "what haven't I verified yet?" — useful when you're building up
-confidence that a commit is correct, which is the core of Kenjutu's review workflow.
+confidence that a commit is correct, which is the core of Kenjutsu's review workflow.
 Inter-diff can't express partial review progress, and remaining diff doesn't
 assume you've already seen a prior version.
 
 ## Interfaces
 
-Kenjutu is available in two interfaces, both sharing the same core engine:
+Kenjutsu is available in two interfaces, both sharing the same core engine:
 
 | Interface   | Binary | Description                            | Docs                                       |
 | ----------- | ------ | -------------------------------------- | ------------------------------------------ |
@@ -75,7 +75,7 @@ Kenjutu is available in two interfaces, both sharing the same core engine:
 
 ### Comment CLI
 
-Kenjutu also ships `kjc`, a utility that outputs diff comments as structured
+Kenjutsu also ships `kjc`, a utility that outputs diff comments as structured
 JSON for AI agents. See [docs/comment-cli.md](docs/comment-cli.md).
 
 ## Key Features

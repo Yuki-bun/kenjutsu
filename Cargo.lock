@@ -724,7 +724,7 @@ version = "0.1.0"
 dependencies = [
  "fs2",
  "git2",
- "kenjutu-types",
+ "kenjutsu-types",
  "log",
  "serde",
  "serde_json",
@@ -2237,24 +2237,24 @@ dependencies = [
 ]
 
 [[package]]
-name = "kenjutu-comments"
+name = "kenjutsu-comments"
 version = "0.2.0"
 dependencies = [
  "anyhow",
  "clap",
  "comment-commit",
  "git2",
- "kenjutu-types",
+ "kenjutsu-types",
  "serde",
  "serde_json",
 ]
 
 [[package]]
-name = "kenjutu-core"
+name = "kenjutsu-core"
 version = "0.1.0"
 dependencies = [
  "git2",
- "kenjutu-types",
+ "kenjutsu-types",
  "log",
  "marker-commit",
  "serde",
@@ -2268,13 +2268,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "kenjutu-desktop"
+name = "kenjutsu-desktop"
 version = "0.1.0"
 dependencies = [
  "comment-commit",
  "git2",
- "kenjutu-core",
- "kenjutu-types",
+ "kenjutsu-core",
+ "kenjutsu-types",
  "log",
  "marker-commit",
  "reqwest",
@@ -2296,21 +2296,21 @@ dependencies = [
 ]
 
 [[package]]
-name = "kenjutu-nvim"
+name = "kenjutsu-nvim"
 version = "0.2.4"
 dependencies = [
  "anyhow",
  "comment-commit",
  "git2",
- "kenjutu-core",
- "kenjutu-types",
+ "kenjutsu-core",
+ "kenjutsu-types",
  "marker-commit",
  "serde",
  "serde_json",
 ]
 
 [[package]]
-name = "kenjutu-types"
+name = "kenjutsu-types"
 version = "0.1.0"
 dependencies = [
  "git2",
@@ -2487,7 +2487,7 @@ version = "0.1.0"
 dependencies = [
  "fs2",
  "git2",
- "kenjutu-types",
+ "kenjutsu-types",
  "log",
  "test-repo",
  "thiserror 2.0.17",
@@ -5014,7 +5014,7 @@ name = "test-repo"
 version = "0.1.0"
 dependencies = [
  "git2",
- "kenjutu-types",
+ "kenjutsu-types",
  "serde",
  "serde_json",
  "tempfile",

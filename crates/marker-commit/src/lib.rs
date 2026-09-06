@@ -7,7 +7,7 @@ mod octopus_merge;
 mod tree_builder_ext;
 
 pub use apply_region::RegionId;
-pub use kenjutu_types::{ChangeId, CommitId};
+pub use kenjutsu_types::{ChangeId, CommitId};
 pub use marker_commit::MarkerCommit;
 pub use materialize_tree::materialize_tree;
 

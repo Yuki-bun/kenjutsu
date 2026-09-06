@@ -69,7 +69,7 @@ export function DeviceAuth() {
           <DialogHeader>
             <DialogTitle>Sign in to GitHub</DialogTitle>
             <DialogDescription>
-              Enter this code on GitHub to authorize Kenjutu
+              Enter this code on GitHub to authorize Kenjutsu
             </DialogDescription>
           </DialogHeader>
           <div className="flex items-center justify-center gap-3 py-4">

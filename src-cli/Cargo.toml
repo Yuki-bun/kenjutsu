@@ -1,10 +1,10 @@
 [package]
-name = "kenjutu-comments"
+name = "kenjutsu-comments"
 version = "0.2.0"
 authors.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Kenjutu comment CLI — diff comments as JSON for agents and tooling"
+description = "Kenjutsu comment CLI — diff comments as JSON for agents and tooling"
 edition = "2024"
 
 [[bin]]
@@ -13,7 +13,7 @@ path = "src/main.rs"
 
 [dependencies]
 comment-commit = { workspace = true }
-kenjutu-types = { workspace = true, features = ["serde"] }
+kenjutsu-types = { workspace = true, features = ["serde"] }
 clap = { version = "4", features = ["derive"] }
 serde = { workspace = true }
 serde_json = { workspace = true }

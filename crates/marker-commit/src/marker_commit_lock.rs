@@ -37,7 +37,7 @@ impl MarkerCommitLock {
 
     pub fn lock_path(repo: &Repository, change_id: ChangeId) -> PathBuf {
         repo.path()
-            .join("info/kenjutu/lock/")
+            .join("info/kenjutsu/lock/")
             .join(change_id.to_string())
     }
 }

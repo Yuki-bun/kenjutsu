@@ -1,10 +1,10 @@
 [package]
-name = "kenjutu-nvim"
+name = "kenjutsu-nvim"
 version = "0.2.4"
 authors.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Kenjutu Neovim backend — daemon for the Neovim plugin"
+description = "Kenjutsu Neovim backend — daemon for the Neovim plugin"
 edition = "2024"
 
 [[bin]]
@@ -18,8 +18,8 @@ vendored-openssl = ["git2/vendored-openssl"]
 anyhow = { workspace = true }
 comment-commit = { workspace = true }
 git2 = { workspace = true }
-kenjutu-core = { workspace = true }
-kenjutu-types = { workspace = true, features = ["serde"] }
+kenjutsu-core = { workspace = true }
+kenjutsu-types = { workspace = true, features = ["serde"] }
 marker-commit = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

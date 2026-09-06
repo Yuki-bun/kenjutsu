@@ -2,7 +2,7 @@ use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 
 use git2::{Repository, Signature, Tree};
-use kenjutu_types::CommitChangeIdExt;
+use kenjutsu_types::CommitChangeIdExt;
 
 use crate::comment_commit_lock::CommentCommitLock;
 use crate::materialize::materialize;
@@ -26,7 +26,7 @@ fn read_file_from_tree(
 /// Manages inline diff comments for a change_id.
 ///
 /// Comments are stored as an append-only action log in git objects:
-/// - Ref: `refs/kenjutu/{change_id}/comments`
+/// - Ref: `refs/kenjutsu/{change_id}/comments`
 /// - Tree: each file path maps to a blob containing a JSON array of `ActionEntry`
 /// - Commit parents: all unique target SHAs referenced in Create actions (prevents GC)
 ///
@@ -279,7 +279,7 @@ impl<'a> CommentCommit<'a> {
 
         let ref_name = comment_ref_name(self.change_id);
         let log_message = format!(
-            "kenjutu: updated comment ref for change_id: {}",
+            "kenjutsu: updated comment ref for change_id: {}",
             self.change_id,
         );
         self.repo.reference(&ref_name, oid, true, &log_message)?;
@@ -328,14 +328,14 @@ impl<'a> CommentCommit<'a> {
     }
 
     fn signature() -> Result<Signature<'static>> {
-        let sig = Signature::now("kenjutu", "kenjutu@gmail.com")?;
+        let sig = Signature::now("kenjutsu", "kenjutsu@gmail.com")?;
         Ok(sig)
     }
 }
 
 /// Construct the ref name for a comment-commit.
 pub(crate) fn comment_ref_name(change_id: ChangeId) -> String {
-    format!("refs/kenjutu/{}/comments", change_id)
+    format!("refs/kenjutsu/{}/comments", change_id)
 }
 
 /// Load action logs from a comment-commit tree.

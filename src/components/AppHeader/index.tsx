@@ -9,7 +9,7 @@ export function AppHeader() {
       <nav className="w-full flex h-10 items-center justify-between px-4 gap-2">
         {/* @ts-expect-error index route "/" not in generated types */}
         <Link to={"/"}>
-          <div className="font-semibold text-lg">Kenjutu</div>
+          <div className="font-semibold text-lg">Kenjutsu</div>
         </Link>
         <div className="flex-1" />
         <AppCommands />

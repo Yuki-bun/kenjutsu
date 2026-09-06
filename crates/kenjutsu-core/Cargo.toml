@@ -1,0 +1,28 @@
+[package]
+name = "kenjutsu-core"
+version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Core library for Kenjutsu — diff generation, jj integration, and syntax highlighting"
+edition = "2024"
+
+[features]
+specta = ["dep:specta", "kenjutsu-types/specta"]
+highlighting = ["dep:two-face", "dep:similar"]
+
+[dependencies]
+git2 = { workspace = true }
+kenjutsu-types = { workspace = true, features = ["serde"] }
+log = { workspace = true }
+marker-commit = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+similar = {version= "2", optional = true }
+specta = { workspace = true, optional = true }
+thiserror = { workspace = true }
+two-face = { version = "0.5", features = ["syntect-default-fancy"], optional = true }
+
+[dev-dependencies]
+test-repo = { workspace = true }
+tempfile = "3"

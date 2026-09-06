@@ -91,7 +91,7 @@ function SshSettingsForm({ settings }: { settings: SshSettings }) {
       <CardHeader>
         <h2 className="text-lg font-medium">SSH Authentication</h2>
         <p className="text-sm text-muted-foreground">
-          Kenjutu auto-detects SSH credentials when fetching commits from
+          Kenjutsu auto-detects SSH credentials when fetching commits from
           remotes. It tries the SSH agent first, then default key files in
           ~/.ssh/. You can optionally override with a specific key path.
         </p>

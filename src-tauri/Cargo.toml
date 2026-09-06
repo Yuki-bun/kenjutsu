@@ -1,18 +1,18 @@
 [package]
-name = "kenjutu-desktop"
+name = "kenjutsu-desktop"
 version.workspace = true
 authors.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Kenjutu desktop app — Tauri 2 GUI with GitHub PR integration"
+description = "Kenjutsu desktop app — Tauri 2 GUI with GitHub PR integration"
 edition = "2024"
-default-run = "kenjutu-desktop"
+default-run = "kenjutsu-desktop"
 
 [lib]
 # The `_lib` suffix may seem redundant but it is necessary
 # to make the lib name unique and wouldn't conflict with the bin name.
 # This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
-name = "kenjutu_lib"
+name = "kenjutsu_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
@@ -20,8 +20,8 @@ tauri-build = { version = "2", features = [] }
 
 [dependencies]
 git2 = { workspace = true }
-kenjutu-core = { workspace = true, features = ["specta", "highlighting"] }
-kenjutu-types = { workspace = true, features = ["specta", "serde"] }
+kenjutsu-core = { workspace = true, features = ["specta", "highlighting"] }
+kenjutsu-types = { workspace = true, features = ["specta", "serde"] }
 log = { workspace = true }
 comment-commit = { workspace = true, features = ["specta"] }
 marker-commit = { workspace = true }

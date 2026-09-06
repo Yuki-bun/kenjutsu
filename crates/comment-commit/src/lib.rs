@@ -6,7 +6,7 @@ mod porting;
 mod tree_builder_ext;
 
 pub use comment_commit::CommentCommit;
-pub use kenjutu_types::{ChangeId, CommitId};
+pub use kenjutsu_types::{ChangeId, CommitId};
 pub use model::{AnchorContext, DiffSide, MaterializedComment, MaterializedReply, PortedComment};
 pub use porting::{find_anchor_position, get_all_ported_comments};
 

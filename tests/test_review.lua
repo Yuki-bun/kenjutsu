@@ -2,8 +2,8 @@
 local t = require("tests.test")
 local t_util = require("tests.utils")
 
-local kjn = require("kenjutu.kjn")
-local review = require("kenjutu.review")
+local kjn = require("kenjutsu.kjn")
+local review = require("kenjutsu.review")
 
 local mock_files = {
   {
@@ -82,13 +82,13 @@ end)
 
 review_case("file list buffer has correct filetype", function()
   open_review()
-  local bufnr = find_buf_by_ft("kenjutu-review-files")
+  local bufnr = find_buf_by_ft("kenjutsu-review-files")
   t.neq(bufnr, nil)
 end)
 
 review_case("file list keymaps are registered", function()
   open_review()
-  local file_list_bufnr = find_buf_by_ft("kenjutu-review-files")
+  local file_list_bufnr = find_buf_by_ft("kenjutsu-review-files")
   assert(file_list_bufnr, "file list buffer not found")
 
   local keymaps = vim.api.nvim_buf_get_keymap(file_list_bufnr, "n")
@@ -107,7 +107,7 @@ end)
 
 review_case("file list renders files correctly", function()
   open_review()
-  local file_list_bufnr = find_buf_by_ft("kenjutu-review-files")
+  local file_list_bufnr = find_buf_by_ft("kenjutsu-review-files")
   assert(file_list_bufnr, "file list buffer not found")
 
   local lines = vim.api.nvim_buf_get_lines(file_list_bufnr, 0, -1, false)
@@ -139,7 +139,7 @@ end)
 review_case("close restores log buffer", function()
   local log_bufnr = open_review()
 
-  local _, winnr = find_buf_by_ft("kenjutu-review-files")
+  local _, winnr = find_buf_by_ft("kenjutsu-review-files")
   assert(winnr, "file list window not found")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_feedkeys("q", "x", false)

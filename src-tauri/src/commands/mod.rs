@@ -16,8 +16,8 @@ use serde::Serialize;
 use specta::Type;
 
 use crate::services::auth as auth_svc;
-use kenjutu_core::services::{diff, git, jj as jj_svc};
-use kenjutu_types::InvalidChangeIdError;
+use kenjutsu_core::services::{diff, git, jj as jj_svc};
+use kenjutsu_types::InvalidChangeIdError;
 
 pub type Result<T> = std::result::Result<T, Error>;
 

@@ -2,7 +2,7 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result};
 use comment_commit::get_all_ported_comments;
-use kenjutu_types::ChangeId;
+use kenjutsu_types::ChangeId;
 use serde::Serialize;
 
 use crate::resolve;

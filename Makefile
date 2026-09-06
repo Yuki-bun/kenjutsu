@@ -27,10 +27,10 @@ test-lua: ## Run Neovim plugin tests
 	nvim -l tests/run.lua
 
 build-kjn: ## Build Neovim plugin binary from source
-	cargo build --release -p kenjutu-nvim --bin kjn
+	cargo build --release -p kenjutsu-nvim --bin kjn
 
 install-kjn: ## Download prebuilt kjn binary
-	nvim -l lua/kenjutu/install.lua
+	nvim -l lua/kenjutsu/install.lua
 
 desktop-dev: ## Start Tauri dev mode
 	pnpm tauri dev

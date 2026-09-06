@@ -2,7 +2,7 @@
 local t = require("tests.test")
 local t_util = require("tests.utils")
 
-local jj = require("kenjutu.jj")
+local jj = require("kenjutsu.jj")
 
 local mock_log_result = {
   lines = {
@@ -90,8 +90,8 @@ local function do_squash(winnr, source_line, dest_line)
 end
 
 squash_case("s on commit enters squash mode and highlights source", function()
-  local state = require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  local state = require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
@@ -102,16 +102,16 @@ squash_case("s on commit enters squash mode and highlights source", function()
   t.eq(state.squash_state.source.change_id, "aaaa1111", "source should be the commit under cursor")
 
   local bufnr = vim.api.nvim_win_get_buf(winnr)
-  local squash_ns = vim.api.nvim_create_namespace("kenjutu_squash")
+  local squash_ns = vim.api.nvim_create_namespace("kenjutsu_squash")
   local marks = vim.api.nvim_buf_get_extmarks(bufnr, squash_ns, 0, -1, { details = true })
   t.eq(#marks, 1, "should have one highlight extmark on source line")
   t.eq(marks[1][2], 0, "extmark should be on line 1 (0-indexed)")
-  t.eq(marks[1][4].hl_group, "KenjutuSquashSource", "extmark should use KenjutuSquashSource highlight")
+  t.eq(marks[1][4].hl_group, "KenjutsuSquashSource", "extmark should use KenjutsuSquashSource highlight")
 end)
 
 squash_case("<Esc> cancels squash mode", function()
-  local state = require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  local state = require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
@@ -125,8 +125,8 @@ squash_case("<Esc> cancels squash mode", function()
 end)
 
 squash_case("s on same commit cancels squash mode", function()
-  local state = require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  local state = require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
@@ -157,8 +157,8 @@ squash_case("s on second commit executes squash with correct args", function()
     callback(nil)
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   do_squash(winnr, 1, 3)
@@ -188,8 +188,8 @@ squash_case("squash error is shown as notification", function()
     callback("conflict in src/main.rs")
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   do_squash(winnr, 1, 3)
@@ -210,8 +210,8 @@ squash_case("log refreshes after successful squash", function()
     callback(nil)
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
 
@@ -247,15 +247,15 @@ squash_case("log refreshes after successful squash", function()
 end)
 
 squash_case("S opens file picker split above", function()
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
 
   vim.api.nvim_feedkeys("S", "x", false)
 
-  local picker_bufnr, picker_winnr = find_buf_by_ft("kenjutu-squash-files")
+  local picker_bufnr, picker_winnr = find_buf_by_ft("kenjutsu-squash-files")
   assert(picker_bufnr and picker_winnr, "file picker should open")
 
   local lines = vim.api.nvim_buf_get_lines(picker_bufnr, 0, -1, false)
@@ -269,15 +269,15 @@ squash_case("S opens file picker split above", function()
 end)
 
 squash_case("file picker: <Space> toggles file selection", function()
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
 
   vim.api.nvim_feedkeys("S", "x", false)
 
-  local picker_bufnr, picker_winnr = find_buf_by_ft("kenjutu-squash-files")
+  local picker_bufnr, picker_winnr = find_buf_by_ft("kenjutsu-squash-files")
   assert(picker_bufnr and picker_winnr, "file picker should open")
 
   vim.api.nvim_set_current_win(picker_winnr)
@@ -290,40 +290,40 @@ squash_case("file picker: <Space> toggles file selection", function()
 end)
 
 squash_case("file picker: q cancels without entering squash mode", function()
-  local state = require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  local state = require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
 
   vim.api.nvim_feedkeys("S", "x", false)
 
-  local _, picker_winnr = find_buf_by_ft("kenjutu-squash-files")
+  local _, picker_winnr = find_buf_by_ft("kenjutsu-squash-files")
   assert(picker_winnr, "file picker should open")
 
   vim.api.nvim_set_current_win(picker_winnr)
   vim.api.nvim_feedkeys("q", "x", false)
 
-  t.eq(find_buf_by_ft("kenjutu-squash-files"), nil, "file picker should close on q")
+  t.eq(find_buf_by_ft("kenjutsu-squash-files"), nil, "file picker should close on q")
   t.eq(state.squash_state, nil, "squash_state should be nil after cancel")
 end)
 
 squash_case("file picker: <CR> confirms and enters squash destination mode", function()
-  local state = require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  local state = require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
 
   vim.api.nvim_feedkeys("S", "x", false)
 
-  local _, picker_winnr = find_buf_by_ft("kenjutu-squash-files")
+  local _, picker_winnr = find_buf_by_ft("kenjutsu-squash-files")
   assert(picker_winnr, "file picker should open")
 
   vim.api.nvim_set_current_win(picker_winnr)
   vim.api.nvim_feedkeys("\r", "x", false)
 
-  t.eq(find_buf_by_ft("kenjutu-squash-files"), nil, "file picker should close on confirm")
+  t.eq(find_buf_by_ft("kenjutsu-squash-files"), nil, "file picker should close on confirm")
   assert(state.squash_state, "squash_state should be set after file selection")
   t.eq(state.squash_state.source.change_id, "aaaa1111", "source should be the commit under cursor")
 end)
@@ -339,15 +339,15 @@ squash_case("full squash after cancelled selective squash should not leak stale 
     callback(nil)
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
 
   vim.api.nvim_feedkeys("S", "x", false)
 
-  local _, picker_winnr = find_buf_by_ft("kenjutu-squash-files")
+  local _, picker_winnr = find_buf_by_ft("kenjutsu-squash-files")
   assert(picker_winnr, "file picker should open")
   vim.api.nvim_set_current_win(picker_winnr)
   vim.api.nvim_feedkeys("\r", "x", false)
@@ -374,15 +374,15 @@ squash_case("squash with selected files passes paths to jj squash", function()
     callback(nil)
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
 
   vim.api.nvim_feedkeys("S", "x", false)
 
-  local _, picker_winnr = find_buf_by_ft("kenjutu-squash-files")
+  local _, picker_winnr = find_buf_by_ft("kenjutsu-squash-files")
   assert(picker_winnr, "file picker should open")
   vim.api.nvim_set_current_win(picker_winnr)
 
@@ -417,8 +417,8 @@ squash_case("squash with only one description passes message directly", function
     callback(nil)
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   do_squash(winnr, 1, 3)
@@ -441,8 +441,8 @@ squash_case("squash with both descriptions opens editor with JJ: separators", fu
     callback(nil)
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   do_squash(winnr, 1, 3)
@@ -476,8 +476,8 @@ squash_case("squash message editor :w strips JJ: lines and executes squash", fun
     callback(nil)
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   do_squash(winnr, 1, 3)
@@ -512,8 +512,8 @@ squash_case("squash message editor q cancels without squashing", function()
     callback(nil)
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   do_squash(winnr, 1, 3)

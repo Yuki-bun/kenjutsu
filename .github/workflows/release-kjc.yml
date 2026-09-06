@@ -50,7 +50,7 @@ jobs:
       - name: Build
         env:
           TARGET: ${{ matrix.target }}
-        run: cargo build --release --package kenjutu-comments --bin kjc --features vendored-openssl --target "$TARGET"
+        run: cargo build --release --package kenjutsu-comments --bin kjc --features vendored-openssl --target "$TARGET"
 
       - name: Prepare artifact
         env:
@@ -84,7 +84,7 @@ jobs:
       - name: Validate version
         run: |
           TAG_VERSION="${GITHUB_REF_NAME#kjc/v}"
-          CARGO_VERSION=$(cargo metadata --format-version 1 --no-deps | jq -r '.packages[] | select(.name == "kenjutu-comments") | .version')
+          CARGO_VERSION=$(cargo metadata --format-version 1 --no-deps | jq -r '.packages[] | select(.name == "kenjutsu-comments") | .version')
           if [ "$TAG_VERSION" != "$CARGO_VERSION" ]; then
             echo "::error::Tag version ($TAG_VERSION) does not match Cargo.toml version ($CARGO_VERSION)"
             exit 1

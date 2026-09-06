@@ -1,8 +1,8 @@
 local t = require("tests.test")
 local t_util = require("tests.utils")
 
-local kjn = require("kenjutu.kjn")
-local review = require("kenjutu.review")
+local kjn = require("kenjutsu.kjn")
+local review = require("kenjutsu.review")
 
 local mock_change_id = "zzzzzzzz"
 

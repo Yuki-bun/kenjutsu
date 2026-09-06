@@ -2,8 +2,8 @@
 local t = require("tests.test")
 local t_util = require("tests.utils")
 
-local jj = require("kenjutu.jj")
-local kjn = require("kenjutu.kjn")
+local jj = require("kenjutsu.jj")
+local kjn = require("kenjutsu.kjn")
 
 local mock_log_result = {
   lines = {
@@ -65,17 +65,17 @@ end
 
 log_case("open creates tab with correct layout", function()
   local tabs_before = #vim.api.nvim_list_tabpages()
-  require("kenjutu.log").open()
+  require("kenjutsu.log").open()
 
   t.eq(#vim.api.nvim_list_tabpages(), tabs_before + 1)
-  t.neq(find_buf_by_ft("kenjutu-log"), nil)
-  t.neq(find_buf_by_ft("kenjutu-log-files"), nil)
+  t.neq(find_buf_by_ft("kenjutsu-log"), nil)
+  t.neq(find_buf_by_ft("kenjutsu-log-files"), nil)
   t.eq(#vim.api.nvim_tabpage_list_wins(0), 2)
 end)
 
 log_case("j moves cursor to next commit line", function()
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
 
@@ -88,8 +88,8 @@ log_case("j moves cursor to next commit line", function()
 end)
 
 log_case("k moves cursor to previous commit line", function()
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
 
@@ -102,32 +102,32 @@ log_case("k moves cursor to previous commit line", function()
 end)
 
 log_case("<CR> opens review screen for commit under cursor", function()
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
 
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
   vim.api.nvim_feedkeys("\r", "x", false)
 
-  t.eq(vim.bo.filetype, "kenjutu-review-files", "<CR> on commit line should open review screen")
+  t.eq(vim.bo.filetype, "kenjutsu-review-files", "<CR> on commit line should open review screen")
 end)
 
 log_case("<CR> does nothing on non-commit line", function()
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
 
   vim.api.nvim_win_set_cursor(winnr, { 2, 0 })
   vim.api.nvim_feedkeys("\r", "x", false)
 
-  t.eq(vim.bo.filetype, "kenjutu-log", "<CR> on non-commit line should stay on log")
+  t.eq(vim.bo.filetype, "kenjutsu-log", "<CR> on non-commit line should stay on log")
 end)
 
 log_case("r refreshes the log buffer content", function()
-  require("kenjutu.log").open()
-  local log_bufnr, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local log_bufnr, winnr = find_buf_by_ft("kenjutsu-log")
   assert(log_bufnr and winnr, "could not find log buffer")
   vim.api.nvim_set_current_win(winnr)
 
@@ -167,7 +167,7 @@ log_case("r refreshes the log buffer content", function()
   t.eq(buf_lines[1], updated_lines[1], "buffer content should reflect refreshed data")
   t.eq(vim.api.nvim_win_get_cursor(winnr)[1], 5, "cursor should follow the same commit after refresh")
 
-  local files_bufnr = find_buf_by_ft("kenjutu-log-files")
+  local files_bufnr = find_buf_by_ft("kenjutsu-log-files")
   assert(files_bufnr, "file tree buffer should exist")
   local files_lines = vim.api.nvim_buf_get_lines(files_bufnr, 0, -1, false)
   local has_new_file = false
@@ -181,10 +181,10 @@ log_case("r refreshes the log buffer content", function()
 end)
 
 log_case("q closes the tab", function()
-  require("kenjutu.log").open()
+  require("kenjutsu.log").open()
   local tabs_before = #vim.api.nvim_list_tabpages()
 
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log buffer window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_feedkeys("q", "x", false)
@@ -199,8 +199,8 @@ log_case("d opens describe split with current description", function()
     callback(nil, { summary = "fix: typo", description = "body line", author = "me", timestamp = "1s ago" })
   end
 
-  require("kenjutu.log").open()
-  local _, log_winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, log_winnr = find_buf_by_ft("kenjutsu-log")
   assert(log_winnr, "could not find log window")
   vim.api.nvim_set_current_win(log_winnr)
   vim.api.nvim_win_set_cursor(log_winnr, { 1, 0 })
@@ -247,8 +247,8 @@ log_case(":w in describe split calls jj describe and refreshes log", function()
     commit_lines = { 1, 3 },
   }
 
-  require("kenjutu.log").open()
-  local log_bufnr, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local log_bufnr, winnr = find_buf_by_ft("kenjutsu-log")
   assert(log_bufnr and winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
@@ -281,8 +281,8 @@ log_case("q in describe split closes without saving", function()
     callback(nil)
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
@@ -308,7 +308,7 @@ log_case("n creates new commit after cursor commit and refreshes log", function(
     callback(nil)
   end
 
-  require("kenjutu.log").open()
+  require("kenjutsu.log").open()
 
   local updated_lines = {
     "o  nnnn user new commit",
@@ -330,7 +330,7 @@ log_case("n creates new commit after cursor commit and refreshes log", function(
       commit_lines = { 1, 3, 5 },
     })
   end
-  local log_bufnr, winnr = find_buf_by_ft("kenjutu-log")
+  local log_bufnr, winnr = find_buf_by_ft("kenjutsu-log")
   assert(log_bufnr and winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
@@ -349,8 +349,8 @@ log_case("n does nothing on non-commit line", function()
     callback(nil)
   end
 
-  require("kenjutu.log").open()
-  local _, winnr = find_buf_by_ft("kenjutu-log")
+  require("kenjutsu.log").open()
+  local _, winnr = find_buf_by_ft("kenjutsu-log")
   assert(winnr, "could not find log window")
   vim.api.nvim_set_current_win(winnr)
   vim.api.nvim_win_set_cursor(winnr, { 2, 0 })

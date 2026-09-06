@@ -14,7 +14,7 @@ cargo build ....
 ## Code Style
 
 - No semicolons
-- Newtype wrappers for IDs: `ChangeId`, `CommitId` in `crates/kenjutu-types`
+- Newtype wrappers for IDs: `ChangeId`, `CommitId` in `crates/kenjutsu-types`
 - Minimize comments. Explain _why_, not _what_. If code needs a comment to explain what it does, rewrite the code instead.
 
 ## Version Control

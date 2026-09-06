@@ -11,7 +11,7 @@ edition = "2024"
 specta = ["dep:specta"]
 
 [dependencies]
-kenjutu-types = { workspace = true, features = ["serde"] }
+kenjutsu-types = { workspace = true, features = ["serde"] }
 git2 = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
