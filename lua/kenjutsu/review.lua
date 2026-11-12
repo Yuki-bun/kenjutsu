@@ -1,3 +1,4 @@
+local config = require("kenjutsu.config")
 local kjn = require("kenjutsu.kjn")
 local diff = require("kenjutsu.diff")
 local file_list = require("kenjutsu.file_list")
@@ -242,7 +243,7 @@ function M.open(dir, commit_id, log_bufnr, on_close)
 
   local file_list_winnr = cur_win
   vim.api.nvim_set_current_win(file_list_winnr)
-  vim.api.nvim_win_set_width(file_list_winnr, 40)
+  vim.api.nvim_win_set_width(file_list_winnr, config.options.review.file_list_width)
 
   -- File list window options
   vim.wo[file_list_winnr].cursorline = true
@@ -291,7 +292,7 @@ function M.open(dir, commit_id, log_bufnr, on_close)
 
   -- Restore focus to file list after diff layout creation
   vim.api.nvim_set_current_win(file_list_winnr)
-  vim.api.nvim_win_set_width(file_list_winnr, 40)
+  vim.api.nvim_win_set_width(file_list_winnr, config.options.review.file_list_width)
 
   s:setup_file_list_keymaps()
 

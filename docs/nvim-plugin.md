@@ -74,6 +74,19 @@ vim.pack.add({ "https://github.com/Yuki-bun/kenjutsu" })
 Clone the repository into your Neovim pack path, then run `make install-kjn`
 (or `make build-kjn`) from the plugin directory.
 
+## Configuration
+
+Calling `setup` is optional.
+
+```lua
+require("kenjutsu").setup({
+  -- default
+  review = {
+    file_list_width = 40, -- width of the file list window in the review screen
+  },
+})
+```
+
 ## Usage
 
 ### Commands
