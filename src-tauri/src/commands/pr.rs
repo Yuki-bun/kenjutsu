@@ -64,7 +64,7 @@ pub async fn get_commit_file_list(
 ) -> Result<CommitFileList> {
     let repository = git::open_repository(&local_dir)?;
 
-    let (change_id, files) = diff::generate_file_list(&repository, commit_sha)?;
+    let (change_id, files) = diff::generate_file_list(&repository, commit_sha, &[])?;
 
     Ok(CommitFileList {
         commit_sha,

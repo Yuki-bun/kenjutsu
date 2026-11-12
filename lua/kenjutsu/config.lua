@@ -3,11 +3,13 @@
 
 ---@class kenjutsu.Config
 ---@field review kenjutsu.ReviewConfig
+---@field ignore string[] List of path patterns to ignore when generating diff.
 
 local M = {}
 
 ---@type kenjutsu.Config
 local defaults = {
+  ignore = {},
   review = {
     file_list_width = 40,
   },

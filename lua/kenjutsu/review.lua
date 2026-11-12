@@ -92,6 +92,7 @@ function ReviewState:refresh_file_list(find_latest_commit)
   kjn.files(self.dir, {
     commit_id = self.commit_id,
     find_latest_commit = find_latest_commit,
+    ignore = config.options.ignore,
   }, function(err, result)
     if err then
       vim.notify("kjn files: " .. err, vim.log.levels.ERROR)
@@ -328,6 +329,7 @@ function M.open(dir, commit_id, log_bufnr, on_close)
 
   kjn.files(dir, {
     commit_id = commit_id,
+    ignore = config.options.ignore,
   }, function(err, result)
     if err then
       vim.notify("kjn files: " .. err, vim.log.levels.ERROR)

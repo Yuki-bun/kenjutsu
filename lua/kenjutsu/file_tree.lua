@@ -1,6 +1,7 @@
 local kjn = require("kenjutsu.kjn")
 local jj = require("kenjutsu.jj")
 local utils = require("kenjutsu.utils")
+local config = require("kenjutsu.config")
 local file_render = require("kenjutsu.file_render")
 
 local M = {}
@@ -15,6 +16,7 @@ local function fetch_commit_data(dir, commit_id, callback)
     files = function(cb)
       kjn.files(dir, {
         commit_id = commit_id,
+        ignore = config.options.ignore,
       }, function(err, result)
         cb(err, not err and result and result.files or nil)
       end)

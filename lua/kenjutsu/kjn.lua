@@ -184,6 +184,7 @@ end
 ---@class kenjutsu.FetchFilesOptions
 ---@field commit_id string
 ---@field find_latest_commit boolean?
+---@field ignore string[]?
 
 ---@param dir string
 ---@param opts kenjutsu.FetchFilesOptions

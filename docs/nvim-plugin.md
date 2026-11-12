@@ -81,6 +81,7 @@ Calling `setup` is optional.
 ```lua
 require("kenjutsu").setup({
   -- default
+  ignore = {}, -- List of path patterns to ignore when generating diff
   review = {
     file_list_width = 40, -- width of the file list window in the review screen
   },

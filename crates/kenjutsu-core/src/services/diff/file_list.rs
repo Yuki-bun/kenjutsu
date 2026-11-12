@@ -88,6 +88,7 @@ fn process_patch_metadata(patch: &git2::Patch, marker_tree: &Tree) -> Result<Fil
 pub fn generate_file_list(
     repository: &git2::Repository,
     sha: CommitId,
+    ignore: &[String],
 ) -> Result<(ChangeId, Vec<FileEntry>)> {
     let commit = repository
         .find_commit(sha.oid())
@@ -108,8 +109,8 @@ pub fn generate_file_list(
         )
     };
 
-    let diff = diff_with_options(repository, &base_tree, &commit_tree)?;
-    let base_to_marker_diff = diff_with_options(repository, &base_tree, &marker_tree)?;
+    let diff = diff_with_options(repository, &base_tree, &commit_tree, ignore)?;
+    let base_to_marker_diff = diff_with_options(repository, &base_tree, &marker_tree, ignore)?;
 
     // Process all file deltas to extract metadata only.
     // Collect all paths touched by diff(B, T) so we can skip them in the ReviewedReverted pass.
@@ -162,11 +163,17 @@ fn diff_with_options<'repo>(
     repo: &'repo Repository,
     old_tree: &Tree<'repo>,
     new_tree: &Tree<'repo>,
+    ignore: &[String],
 ) -> Result<git2::Diff<'repo>> {
     let mut opts = git2::DiffOptions::new();
     opts.context_lines(3)
         .interhunk_lines(0)
         .ignore_whitespace(false);
+
+    ignore.iter().for_each(|pattern| {
+        opts.pathspec(format!("!{pattern}"));
+    });
+    opts.pathspec("*");
 
     let mut diff = repo.diff_tree_to_tree(Some(old_tree), Some(new_tree), Some(&mut opts))?;
     let mut find_opts = git2::DiffFindOptions::new();
@@ -189,7 +196,7 @@ mod tests {
         t.write_file("hello.rs", "fn main() {}\n").unwrap();
         let commit = t.commit("add hello.rs").unwrap().created;
 
-        let (change_id, files) = generate_file_list(&t.repo, commit.commit_id).unwrap();
+        let (change_id, files) = generate_file_list(&t.repo, commit.commit_id, &[]).unwrap();
 
         assert_eq!(change_id, commit.change_id);
         assert_eq!(files.len(), 1);
@@ -210,7 +217,7 @@ mod tests {
             .unwrap();
         let sha = t.commit("modify").unwrap().created.commit_id;
 
-        let (_, files) = generate_file_list(&t.repo, sha).unwrap();
+        let (_, files) = generate_file_list(&t.repo, sha, &[]).unwrap();
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0].status, FileChangeStatus::Modified);
@@ -228,7 +235,7 @@ mod tests {
         t.delete_file("temp.rs").unwrap();
         let sha = t.commit("delete").unwrap().created.commit_id;
 
-        let (_, files) = generate_file_list(&t.repo, sha).unwrap();
+        let (_, files) = generate_file_list(&t.repo, sha, &[]).unwrap();
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0].status, FileChangeStatus::Deleted);
@@ -250,7 +257,7 @@ mod tests {
         t.rename_file("old_name.rs", "new_name.rs").unwrap();
         let sha = t.commit("rename").unwrap().created.commit_id;
 
-        let (_, files) = generate_file_list(&t.repo, sha).unwrap();
+        let (_, files) = generate_file_list(&t.repo, sha, &[]).unwrap();
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0].status, FileChangeStatus::Renamed);
@@ -271,12 +278,32 @@ mod tests {
         t.write_file("c.rs", "cc\n").unwrap();
         let sha = t.commit("modify all").unwrap().created.commit_id;
 
-        let (_, files) = generate_file_list(&t.repo, sha).unwrap();
+        let (_, files) = generate_file_list(&t.repo, sha, &[]).unwrap();
 
         assert_eq!(files.len(), 3);
         let mut paths: Vec<_> = files.iter().filter_map(|f| f.new_path.as_deref()).collect();
         paths.sort();
         assert_eq!(paths, vec!["a.rs", "b.rs", "c.rs"]);
+    }
+
+    #[test]
+    fn file_list_ignore() {
+        let t = TestRepo::new().unwrap();
+        t.write_file("a.rs", "a\n").unwrap();
+        t.write_file("b.rs", "b\n").unwrap();
+        t.write_file("c.gen", "c\n").unwrap();
+        t.commit("initial").unwrap();
+
+        t.write_file("a.rs", "aa\n").unwrap();
+        t.write_file("b.rs", "bb\n").unwrap();
+        t.write_file("c.gen", "cc\n").unwrap();
+        let sha = t.commit("modify all").unwrap().created.commit_id;
+
+        let (_, files) =
+            generate_file_list(&t.repo, sha, &["*.gen".to_string(), "b.rs".to_string()]).unwrap();
+
+        assert_eq!(files.len(), 1);
+        assert_eq!(files[0].new_path.as_deref(), Some("a.rs"));
     }
 
     #[test]
@@ -291,7 +318,7 @@ mod tests {
             .unwrap();
         let sha = t.commit("modify").unwrap().created.commit_id;
 
-        let (_, files) = generate_file_list(&t.repo, sha).unwrap();
+        let (_, files) = generate_file_list(&t.repo, sha, &[]).unwrap();
 
         assert_eq!(files[0].additions, 3);
         assert_eq!(files[0].deletions, 2);
@@ -307,7 +334,7 @@ mod tests {
         let commit = t.repo.find_commit(sha.oid()).unwrap();
         let change_id = commit.change_id();
 
-        let (change_id_, files) = generate_file_list(&t.repo, sha).unwrap();
+        let (change_id_, files) = generate_file_list(&t.repo, sha, &[]).unwrap();
         assert_eq!(change_id_, change_id);
         assert_eq!(files.len(), 1);
         assert_eq!(files[0].status, FileChangeStatus::Modified);
@@ -333,7 +360,7 @@ mod tests {
             .unwrap()
             .commit_id;
 
-        let (_, files) = generate_file_list(&t.repo, merge_sha).unwrap();
+        let (_, files) = generate_file_list(&t.repo, merge_sha, &[]).unwrap();
 
         assert!(
             files.is_empty(),
@@ -367,7 +394,7 @@ mod tests {
         t.write_file("file.txt", "resolved\n").unwrap();
         let merge = t.work_copy().unwrap();
 
-        let (_, files) = generate_file_list(&t.repo, merge.commit_id).unwrap();
+        let (_, files) = generate_file_list(&t.repo, merge.commit_id, &[]).unwrap();
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0].new_path.as_deref(), Some("file.txt"));
@@ -403,7 +430,7 @@ mod tests {
         // Merge M: parents=[B, C], tree = auto-merged (both changes)
         let merge = t.merge(&[b.change_id, c.change_id], "merge").unwrap();
 
-        let (_, files) = generate_file_list(&t.repo, merge.commit_id).unwrap();
+        let (_, files) = generate_file_list(&t.repo, merge.commit_id, &[]).unwrap();
 
         assert!(
             files.is_empty(),
@@ -429,7 +456,7 @@ mod tests {
         marker.write().unwrap();
         drop(marker);
 
-        let (_, files) = generate_file_list(&t.repo, b.commit_id).unwrap();
+        let (_, files) = generate_file_list(&t.repo, b.commit_id, &[]).unwrap();
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0].review_status, ReviewStatus::Reviewed);
@@ -461,7 +488,7 @@ mod tests {
         marker.write().unwrap();
         drop(marker);
 
-        let (_, files) = generate_file_list(&t.repo, b.commit_id).unwrap();
+        let (_, files) = generate_file_list(&t.repo, b.commit_id, &[]).unwrap();
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0].review_status, ReviewStatus::PartiallyReviewed);
@@ -482,7 +509,7 @@ mod tests {
         marker.write().unwrap();
         drop(marker);
 
-        let (_, files) = generate_file_list(&t.repo, b.commit_id).unwrap();
+        let (_, files) = generate_file_list(&t.repo, b.commit_id, &[]).unwrap();
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0].review_status, ReviewStatus::Reviewed);
@@ -511,7 +538,7 @@ mod tests {
         t.write_file("foo.rs", "fn old() {}\n").unwrap();
         let b2 = t.work_copy().unwrap();
 
-        let (_, files) = generate_file_list(&t.repo, b2.commit_id).unwrap();
+        let (_, files) = generate_file_list(&t.repo, b2.commit_id, &[]).unwrap();
 
         // diff(B, T) is now empty (no changes), but diff(B, M) still has foo.rs
         let reverted: Vec<_> = files

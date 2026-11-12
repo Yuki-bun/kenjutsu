@@ -102,6 +102,8 @@ struct FilesParams {
     commit_id: CommitId,
     #[serde(default)]
     find_latest_commit: bool,
+    #[serde(default)]
+    ignore: Vec<String>,
 }
 
 fn handle_files(id: u64, repo: &git2::Repository, params: &serde_json::Value) -> Response {
@@ -119,7 +121,7 @@ fn handle_files(id: u64, repo: &git2::Repository, params: &serde_json::Value) ->
         params.commit_id
     };
 
-    match kenjutsu_core::services::diff::generate_file_list(repo, commit_id) {
+    match kenjutsu_core::services::diff::generate_file_list(repo, commit_id, &params.ignore) {
         Ok((change_id, files)) => {
             let output = serde_json::json!({
                 "commitId": commit_id,
