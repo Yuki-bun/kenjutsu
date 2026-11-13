@@ -187,6 +187,7 @@ impl JjCommandBuilder {
     fn new(dir: &Path) -> Self {
         let mut command = Command::new("jj");
         command.current_dir(dir);
+        command.args(["--config", "signing.backend=none"]);
         Self { command }
     }
 
