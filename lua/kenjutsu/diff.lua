@@ -1,6 +1,7 @@
 local utils = require("kenjutsu.utils")
 local kjn = require("kenjutsu.kjn")
 local mod_comments = require("kenjutsu.comments")
+local selection_diff = require("kenjutsu.selection_diff")
 
 local M = {}
 
@@ -244,6 +245,10 @@ function DiffState:install_keymaps(bufnr)
 
   vim.keymap.set("n", "q", function()
     cb.close()
+  end, opts)
+
+  vim.keymap.set({ "n", "v" }, "gy", function()
+    self:yank_diff()
   end, opts)
 end
 
@@ -505,6 +510,44 @@ function DiffState:new_comment()
       self:refresh_signs()
     end,
   })
+end
+
+function DiffState:yank_diff()
+  local file = self.file
+  local side_info = self:current_side()
+  if not file or not side_info then
+    return
+  end
+  if side_info.tree ~= "target" then
+    vim.notify("Can only copy the diff from the New side", vim.log.levels.WARN)
+    return
+  end
+
+  local mode = vim.fn.mode()
+  local is_visual = mode == "v" or mode == "V" or mode == "\22"
+  local cursor_line = vim.api.nvim_win_get_cursor(0)[1]
+  local first, last = cursor_line, cursor_line
+  if is_visual then
+    local anchor_line = vim.fn.line("v")
+    first, last = math.min(cursor_line, anchor_line), math.max(cursor_line, anchor_line)
+  end
+  if is_visual then
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+  end
+
+  local function buf_lines(side)
+    return vim.api.nvim_buf_get_lines(self:buf(side), 0, -1, false)
+  end
+  local body = selection_diff.body(buf_lines("left"), buf_lines("right"), first, last)
+  if not body then
+    vim.notify("Nothing to copy: file is empty on the New side", vim.log.levels.WARN)
+    return
+  end
+
+  local text = selection_diff.header(file) .. "\n" .. body
+  vim.fn.setreg("+", text)
+  vim.fn.setreg('"', text)
+  vim.notify("Copied diff of selection in " .. utils.file_path(file))
 end
 
 function DiffState:open_thread_at_cursor()

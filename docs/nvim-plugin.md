@@ -135,6 +135,7 @@ require("kenjutsu").setup({
 | `gk`    | Jump to previous file                         |
 | `t`     | Toggle diff mode (remaining ↔ reviewed)       |
 | `gc`    | Add a comment on the current line             |
+| `gy`    | Copy the diff of the line/selection (New side only) |
 | `go`    | Open comment thread at cursor                 |
 | `gC`    | Open comment list for current file            |
 | `]x`    | Jump to next comment                          |

@@ -220,3 +220,108 @@ diff_case("mark_action with visual selection applies only selected range", funct
 
   t.eq(got_content, "same1\nright A\nsame2\nleft B\nsame3\n")
 end)
+
+-- gy: copy diff of selection ---------------------------------------------------
+
+local yank_blobs = {
+  base = "a\nb\nc\n",
+  marker = "a\nb\nc\n",
+  target = "a\nB\nc\n",
+}
+
+---@return string[] notifications
+local function capture_notify()
+  local messages = {}
+  ---@diagnostic disable-next-line: duplicate-set-field
+  vim.notify = function(msg)
+    table.insert(messages, msg)
+  end
+  return messages
+end
+
+local function yank_case(name, fn)
+  diff_case(name, function()
+    local orig_notify = vim.notify
+    vim.fn.setreg('"', "untouched")
+    local ok, err = pcall(fn)
+    vim.notify = orig_notify
+    if not ok then
+      error(err, 0)
+    end
+  end)
+end
+
+yank_case("gy on the New side copies the diff of the cursor line", function()
+  open_review({ reviewStatus = "unreviewed" }, yank_blobs)
+  local _, _, diff_right = t_util.review_wins()
+  vim.api.nvim_set_current_win(diff_right)
+  vim.api.nvim_win_set_cursor(diff_right, { 2, 0 })
+
+  vim.api.nvim_feedkeys("gy", "x", false)
+
+  t.eq(
+    vim.fn.getreg('"'),
+    table.concat({ "before: src/foo.lua", "after: src/foo.lua", "@@ -2,1 +2,1 @@", "-b", "+B" }, "\n")
+  )
+end)
+
+yank_case("gy in visual mode covers the selected lines regardless of direction", function()
+  open_review({ reviewStatus = "unreviewed" }, yank_blobs)
+  local _, _, diff_right = t_util.review_wins()
+  vim.api.nvim_set_current_win(diff_right)
+  vim.api.nvim_win_set_cursor(diff_right, { 3, 0 })
+
+  vim.api.nvim_feedkeys("Vkgy", "x", false)
+
+  t.eq(
+    vim.fn.getreg('"'),
+    table.concat({ "before: src/foo.lua", "after: src/foo.lua", "@@ -2,2 +2,2 @@", "-b", "+B", " c" }, "\n")
+  )
+end)
+
+yank_case("gy on unchanged lines copies them as context", function()
+  open_review({ reviewStatus = "unreviewed" }, yank_blobs)
+  local _, _, diff_right = t_util.review_wins()
+  vim.api.nvim_set_current_win(diff_right)
+  vim.api.nvim_win_set_cursor(diff_right, { 1, 0 })
+
+  vim.api.nvim_feedkeys("gy", "x", false)
+
+  t.eq(vim.fn.getreg('"'), table.concat({ "before: src/foo.lua", "after: src/foo.lua", "@@ -1,1 +1,1 @@", " a" }, "\n"))
+end)
+
+yank_case("gy on the left side warns and copies nothing", function()
+  local messages = capture_notify()
+  open_review({ reviewStatus = "unreviewed" }, yank_blobs)
+  local _, diff_left, _ = t_util.review_wins()
+  vim.api.nvim_set_current_win(diff_left)
+
+  vim.api.nvim_feedkeys("gy", "x", false)
+
+  t.eq(vim.fn.getreg('"'), "untouched")
+  t.eq(messages, { "Can only copy the diff from the New side" })
+end)
+
+yank_case("gy on the reviewed marker side warns and copies nothing", function()
+  local messages = capture_notify()
+  open_review({ reviewStatus = "reviewed" }, yank_blobs)
+  local _, _, diff_right = t_util.review_wins()
+  vim.api.nvim_set_current_win(diff_right)
+
+  vim.api.nvim_feedkeys("gy", "x", false)
+
+  t.eq(vim.fn.getreg('"'), "untouched")
+  t.eq(messages, { "Can only copy the diff from the New side" })
+end)
+
+yank_case("gy warns when the New side is empty", function()
+  local messages = capture_notify()
+  open_review({ reviewStatus = "unreviewed" }, { base = "a\n", marker = "a\n", target = "" })
+  local _, _, diff_right = t_util.review_wins()
+  vim.api.nvim_set_current_win(diff_right)
+
+  vim.api.nvim_feedkeys("gy", "x", false)
+
+  t.eq(vim.fn.getreg('"'), "untouched")
+  t.eq(messages, { "Nothing to copy: file is empty on the New side" })
+end)
