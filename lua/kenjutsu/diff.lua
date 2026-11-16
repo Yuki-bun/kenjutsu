@@ -250,6 +250,14 @@ function DiffState:install_keymaps(bufnr)
   vim.keymap.set({ "n", "v" }, "gy", function()
     self:yank_diff()
   end, opts)
+
+  for _, key in ipairs({ "zo", "zO", "zv", "zr", "zR" }) do
+    vim.keymap.set("n", key, function()
+      local cursor = vim.api.nvim_win_get_cursor(0)
+      vim.cmd("normal! " .. vim.v.count1 .. key)
+      vim.api.nvim_win_set_cursor(0, cursor)
+    end, opts)
+  end
 end
 
 ---@class kenjutsu.SetFileOpts
